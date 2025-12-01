@@ -64,16 +64,17 @@ POST _bulk
 { "create": { "_index": "logs-foo.bar-default" } }
 { "@timestamp": "2025-12-01T09:05:00Z", "message": "event 2", "log.level": "ERROR" }
 
-## Check the datastream is created
+## Check the datastream is created with generation number 000001
 GET _cat/indices?s=i
 ## Check the configuration of the datastream
+## Generation is 1, means its writing to this 000001
 GET _data_stream/logs-foo.bar-default
 
 ## Rollover now to check new datastream is generated
 POST logs-foo.bar-default/_rollover
 ## Check the configuration of the datastream
-## Observed 2 datastream generation number
 GET _cat/indices?s=i
+## Observed datastream generation number 000002
 GET _data_stream/logs-foo.bar-default
 
 ## Keep running this to observed the changes
